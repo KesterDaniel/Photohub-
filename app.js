@@ -10,48 +10,54 @@ mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
 
 const CampgroundSchema = mongoose.Schema({
     name: String,
-    image: String
+    image: String,
+    description: String
 })
 
 const Campground = mongoose.model("campground", CampgroundSchema)
 
-// async function TestCamp(){
+// async function NewCamp(){
 //     try {
-//         const MyCamp = await Campground.create({
-//             name: "Salmona creek",
-//             image: "https://pixabay.com/get/ga9b3e521a9e485904f749a384cfccff35a58c3e992a624cceda5140b9d03f5386c6c4b3abc1f8dcb168b1f9c24ab9d4a_340.jpg",
+//         const camp = await Campground.create({
+//             name: "Dreaded Hill", 
+//             image: "https://pixabay.com/get/g9bc057ccee42b6646a4417406906446f0d95db666ca6dc87a7f13cd489a1e3a7b9539c701db323e227cd946058399f22_340.jpg",
+//             description: "A very deadly morgage trench following the demise of the the great warlord in the ancient times. U dont wanna mess around here. ha ha ha!!"
 //         })
-//         console.log("Newly Created Campground: ")
-//         console.log(MyCamp)
+//         console.log("campground successfully created...")
+//         console.log(camp)
 //     } catch (error) {
 //         console.log(error)
 //     }
 // }
 
-// TestCamp()
+// NewCamp()
 
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
 
- 
+
+//ROOT ROUTE
 app.get("/", (req, res)=>{
     res.render("landing")
 })
 
+//INDEX ROUTE
 app.get("/campgrounds", async(req, res)=>{
     try {
         const allCampgrounds = await Campground.find({})
-        res.render("campgrounds", { campgrounds: allCampgrounds })
+        res.render("index", { campgrounds: allCampgrounds })
     } catch (error) {
         console.log(error)
     }
 })
 
+//CREATE ROUTE
 app.post("/campgrounds", async(req, res)=>{
     const name = req.body.name
     const image = req.body.image
-    const newCampground = { name, image}
+    const description = req.body.description
+    const newCampground = { name, image, description}
     try {
         await Campground.create(newCampground)
         console.log("CampGround successfully created")
@@ -61,8 +67,20 @@ app.post("/campgrounds", async(req, res)=>{
     }
 })
 
+//NEW ROUTE
 app.get("/campgrounds/new", (req, res)=>{
     res.render("new")
+})
+
+//SHOW ROUTE
+app.get("/campgrounds/:id", async(req, res)=>{
+    const CampId = req.params.id
+    try {
+        const chosenCamp = await Campground.findById(CampId)
+        res.render("show", {campground: chosenCamp})
+    } catch (error) {
+        console.log(error)
+    }
 })
 
 app.listen(port, ()=>{
