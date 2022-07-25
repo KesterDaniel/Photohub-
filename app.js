@@ -4,33 +4,29 @@ const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
 const port = 3000 || process.env.PORT 
 
+const Campground = require("./models/campgrounds")
+
 mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
     useUnifiedTopology: true
 })
 
-const CampgroundSchema = mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-})
 
-const Campground = mongoose.model("campground", CampgroundSchema)
 
-// async function NewCamp(){
-//     try {
-//         const camp = await Campground.create({
-//             name: "Dreaded Hill", 
-//             image: "https://pixabay.com/get/g9bc057ccee42b6646a4417406906446f0d95db666ca6dc87a7f13cd489a1e3a7b9539c701db323e227cd946058399f22_340.jpg",
-//             description: "A very deadly morgage trench following the demise of the the great warlord in the ancient times. U dont wanna mess around here. ha ha ha!!"
-//         })
-//         console.log("campground successfully created...")
-//         console.log(camp)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
+async function NewCamp(){
+    try {
+        const camp = await Campground.create({
+            name: "Refactor Camp", 
+            image: "https://pixabay.com/get/g9bc057ccee42b6646a4417406906446f0d95db666ca6dc87a7f13cd489a1e3a7b9539c701db323e227cd946058399f22_340.jpg",
+            description: "What a way to refactor a camp in the days of old beginning from the way of the gods. hahaha!!!"
+        })
+        console.log("campground successfully created...")
+        console.log(camp)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-// NewCamp()
+NewCamp()
 
 app.set("view engine", "ejs")
 app.use(express.static("public"))
