@@ -5,28 +5,16 @@ const mongoose = require("mongoose")
 const port = 3000 || process.env.PORT 
 
 const Campground = require("./models/campgrounds")
+const seedDb = require("./seeds")
 
 mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
     useUnifiedTopology: true
 })
 
+seedDb() 
 
 
-async function NewCamp(){
-    try {
-        const camp = await Campground.create({
-            name: "Refactor Camp", 
-            image: "https://pixabay.com/get/g9bc057ccee42b6646a4417406906446f0d95db666ca6dc87a7f13cd489a1e3a7b9539c701db323e227cd946058399f22_340.jpg",
-            description: "What a way to refactor a camp in the days of old beginning from the way of the gods. hahaha!!!"
-        })
-        console.log("campground successfully created...")
-        console.log(camp)
-    } catch (error) {
-        console.log(error)
-    }
-}
 
-NewCamp()
 
 app.set("view engine", "ejs")
 app.use(express.static("public"))
@@ -73,6 +61,8 @@ app.get("/campgrounds/:id", async(req, res)=>{
     const CampId = req.params.id
     try {
         const chosenCamp = await Campground.findById(CampId)
+        await chosenCamp.populate("comments")
+        console.log(chosenCamp)
         res.render("show", {campground: chosenCamp})
     } catch (error) {
         console.log(error)
