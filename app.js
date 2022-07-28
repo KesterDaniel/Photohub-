@@ -6,7 +6,7 @@ const port = 3000 || process.env.PORT
 
 const Campground = require("./models/campgrounds")
 const Comment = require("./models/comments")
-const seedDb = require("./seeds")
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
     useUnifiedTopology: true
@@ -18,7 +18,7 @@ app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
 
-seedDb() 
+
 
 
 //ROOT ROUTE
