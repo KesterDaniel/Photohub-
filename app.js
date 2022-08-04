@@ -2,21 +2,37 @@ const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
-const port = 3000 || process.env.PORT 
-
+const passport = require("passport")
+const expressSession = require("express-session")
+const passportLocalMongose = require("passport-local-mongoose")
+const LocalStrategy = require("passport-local")
+const User = require("./models/usermodel")
 const Campground = require("./models/campgrounds")
 const Comment = require("./models/comments")
+const port = 3000 || process.env.PORT 
 
-
+//Mongoose connect config
 mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
     useUnifiedTopology: true
 })
 
 
-
+//App and passport Config
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
+
+app.use(expressSession({
+    secret: "This is yelpcamp Auth session in progress",
+    resave: false,
+    saveUninitialized: false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.use(new LocalStrategy(User.authenticate()))
+passport.deserializeUser(User.deserializeUser())
+passport.serializeUser(User.serializeUser())
 
 
 
