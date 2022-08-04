@@ -102,7 +102,7 @@ app.get("/campgrounds/:id/comments/new", isLoggedIn, async(req, res)=>{
     }
 })
 
-app.post("/campgrounds/:id/comments", async(req, res)=>{
+app.post("/campgrounds/:id/comments", isLoggedIn, async(req, res)=>{
     const newComment = req.body.comment
     const campId = req.params.id
     try {
