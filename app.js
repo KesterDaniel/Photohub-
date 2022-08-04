@@ -113,6 +113,25 @@ app.post("/campgrounds/:id/comments", async(req, res)=>{
     }
 })
 
+//Auth Routes
+
+app.get("/signup", (req, res)=>{
+    res.render("signUpForm")
+})
+
+app.post("/signup", async(req, res)=>{
+    const username = req.body.username
+    const password = req.body.password
+    const newUser = new User({username})
+    try {
+        await User.register(newUser, password)
+        await passport.authenticate("local")
+        res.redirect("/campgrounds")
+    } catch (error) {
+        console.log(error)
+        res.redirect("/signup")
+    }
+})
 
 app.listen(port, ()=>{
     console.log("Yelp is up")
