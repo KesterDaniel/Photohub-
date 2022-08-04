@@ -21,6 +21,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(function(req, res, next){
+    res.locals.currentUser = req.user
+    next()
+})
+
 
 app.use(expressSession({
     secret: "This is yelpcamp Auth session in progress",
@@ -46,7 +51,7 @@ app.get("/", (req, res)=>{
 app.get("/campgrounds", async(req, res)=>{
     try {
         const allCampgrounds = await Campground.find({})
-        res.render("index", { campgrounds: allCampgrounds })
+        res.render("index", { campgrounds: allCampgrounds, currentUser: req.user})
     } catch (error) {
         console.log(error)
     }
@@ -69,7 +74,7 @@ app.post("/campgrounds", async(req, res)=>{
 
 //NEW ROUTE
 app.get("/campgrounds/new", (req, res)=>{
-    res.render("new")
+    res.render("new", { currentUser: req.user })
 })
 
 //SHOW ROUTE
@@ -78,7 +83,7 @@ app.get("/campgrounds/:id", async(req, res)=>{
     try {
         const chosenCamp = await Campground.findById(CampId)
         await chosenCamp.populate("comments")
-        res.render("show", {campground: chosenCamp})
+        res.render("show", {campground: chosenCamp,  currentUser: req.user})
     } catch (error) {
         console.log(error)
     }
@@ -88,10 +93,10 @@ app.get("/campgrounds/:id", async(req, res)=>{
 //COMMENTS ROUTE
 //==============
 
-app.get("/campgrounds/:id/comments/new", async(req, res)=>{
+app.get("/campgrounds/:id/comments/new", isLoggedIn, async(req, res)=>{
     try {
         const campground = await Campground.findById(req.params.id)
-        res.render("newComment", { campground })
+        res.render("newComment", { campground,  currentUser: req.user })
     } catch (error) {
         console.log(error)
     }
@@ -116,7 +121,7 @@ app.post("/campgrounds/:id/comments", async(req, res)=>{
 //Auth Routes
 
 app.get("/signup", (req, res)=>{
-    res.render("signUpForm")
+    res.render("signUpForm", { currentUser: req.user })
 })
 
 app.post("/signup", async(req, res)=>{
@@ -125,13 +130,41 @@ app.post("/signup", async(req, res)=>{
     const newUser = new User({username})
     try {
         await User.register(newUser, password)
-        await passport.authenticate("local")
-        res.redirect("/campgrounds")
+        await passport.authenticate("local")(req, res, function(){
+            res.redirect("/campgrounds")
+        })
     } catch (error) {
         console.log(error)
         res.redirect("/signup")
     }
 })
+
+app.get("/login", (req, res)=>{
+    res.render("loginform", { currentUser: req.user })
+})
+
+app.post("/login", passport.authenticate("local", {
+    successRedirect: "/campgrounds",
+    failureRedirect: "/login"
+}), (req, res)=>{
+
+})
+
+app.get("/logout", (req, res, next)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err)
+        }
+        res.redirect("/campgrounds")
+    })
+})
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect("/login")
+}
 
 app.listen(port, ()=>{
     console.log("Yelp is up")
