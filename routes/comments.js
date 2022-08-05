@@ -19,6 +19,9 @@ router.post("/", isLoggedIn, async(req, res)=>{
     try {
        const MyComment = await Comment.create(newComment)
        const camp = await Campground.findById(campId)
+       MyComment.Author.id = req.user._id
+       MyComment.Author.username = req.user.username
+       await MyComment.save()
        await camp.comments.push(MyComment)
        await camp.save()
        res.redirect(`/campgrounds/${campId}`)
