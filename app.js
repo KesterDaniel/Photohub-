@@ -24,16 +24,14 @@ mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(passport.initialize())
-app.use(passport.session())
-app.use("/campgrounds/:id/comments", commentRoute)
-app.use(indexRoute)
-app.use("/campgrounds", campgroundRoute)
 app.use(expressSession({
     secret: "This is yelpcamp Auth session in progress",
     resave: false,
     saveUninitialized: false
 }))
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use(function(req, res, next){
     res.locals.currentUser = req.user
     next()
@@ -43,6 +41,11 @@ app.use(function(req, res, next){
 passport.use(new LocalStrategy(User.authenticate()))
 passport.deserializeUser(User.deserializeUser())
 passport.serializeUser(User.serializeUser())
+
+app.use("/campgrounds/:id/comments", commentRoute)
+app.use(indexRoute)
+app.use("/campgrounds", campgroundRoute)
+
 
 
 app.listen(port, ()=>{
