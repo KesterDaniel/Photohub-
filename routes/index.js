@@ -14,7 +14,7 @@ router.get("/", (req, res)=>{
 //Auth Routes
 
 router.get("/signup", (req, res)=>{
-    res.render("signUpForm", { currentUser: req.user })
+    res.render("signUpForm")
 })
 
 router.post("/signup", async(req, res)=>{
@@ -33,7 +33,7 @@ router.post("/signup", async(req, res)=>{
 })
 
 router.get("/login", (req, res)=>{
-    res.render("loginform", { currentUser: req.user })
+    res.render("loginform")
 })
 
 router.post("/login", passport.authenticate("local", {

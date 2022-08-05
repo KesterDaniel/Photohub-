@@ -6,7 +6,7 @@ const Campground = require("../models/campgrounds")
 router.get("/", async(req, res)=>{
     try {
         const allCampgrounds = await Campground.find({})
-        res.render("index", { campgrounds: allCampgrounds, currentUser: req.user})
+        res.render("index", { campgrounds: allCampgrounds})
     } catch (error) {
         console.log(error)
     }
@@ -29,7 +29,7 @@ router.post("/", async(req, res)=>{
 
 //NEW ROUTE
 router.get("/new", (req, res)=>{
-    res.render("new", { currentUser: req.user })
+    res.render("new")
 })
 
 //SHOW ROUTE
@@ -38,7 +38,7 @@ router.get("/:id", async(req, res)=>{
     try {
         const chosenCamp = await Campground.findById(CampId)
         await chosenCamp.populate("comments")
-        res.render("show", {campground: chosenCamp,  currentUser: req.user})
+        res.render("show", {campground: chosenCamp})
     } catch (error) {
         console.log(error)
     }

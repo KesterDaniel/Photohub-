@@ -7,7 +7,7 @@ const Comment = require("../models/comments")
 router.get("/new", isLoggedIn, async(req, res)=>{
     try {
         const campground = await Campground.findById(req.params.id)
-        res.render("newComment", { campground,  currentUser: req.user })
+        res.render("newComment", { campground })
     } catch (error) {
         console.log(error)
     }
