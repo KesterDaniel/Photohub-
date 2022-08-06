@@ -6,7 +6,14 @@ const CampgroundSchema = mongoose.Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    Author: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        username: String
+    }
 })
 
 const Campground = mongoose.model("campground", CampgroundSchema)

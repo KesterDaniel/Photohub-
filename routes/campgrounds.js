@@ -13,11 +13,15 @@ router.get("/", async(req, res)=>{
 })
 
 //CREATE ROUTE
-router.post("/", async(req, res)=>{
+router.post("/", isLoggedIn, async(req, res)=>{
     const name = req.body.name
     const image = req.body.image
     const description = req.body.description
-    const newCampground = { name, image, description}
+    const Author = {
+        id: req.user._id,
+        username: req.user.username
+    }
+    const newCampground = { name, image, description, Author}
     try {
         await Campground.create(newCampground)
         console.log("CampGround successfully created")
@@ -28,7 +32,7 @@ router.post("/", async(req, res)=>{
 })
 
 //NEW ROUTE
-router.get("/new", (req, res)=>{
+router.get("/new", isLoggedIn, (req, res)=>{
     res.render("new")
 })
 
@@ -43,5 +47,12 @@ router.get("/:id", async(req, res)=>{
         console.log(error)
     }
 })
+
+function isLoggedIn(req, res, next){
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect("/login")
+}
 
 module.exports = router
