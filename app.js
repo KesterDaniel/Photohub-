@@ -2,6 +2,7 @@ const express = require("express")
 const app = express()
 const bodyParser = require("body-parser")
 const mongoose = require("mongoose")
+const methodOverride = require("method-override")
 const passport = require("passport")
 const expressSession = require("express-session")
 const passportLocalMongose = require("passport-local-mongoose")
@@ -24,6 +25,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
 app.set("view engine", "ejs")
 app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
+app.use(methodOverride("_method"))
 app.use(expressSession({
     secret: "This is yelpcamp Auth session in progress",
     resave: false,

@@ -1,0 +1,37 @@
+<%- include ("partials/header") %>
+
+
+
+<div class="container">
+    <h1 style="text-align: center;">Edit <%= campground.name %></h1>
+
+    <div style="width: 30%; margin: 25px auto;">
+        <form action="/campgrounds/<%= campground._id %>?_method=put" method="post">
+            <div class="mb-2">
+              <label for="camp-name" class="form-label">Campground Name</label>
+              <input type="text" class="form-control" id="camp-name" aria-describedby="emailHelp" name="campground[name]" value="<%= campground.name %>">
+            </div>
+
+            <div class="mb-2">
+              <label for="image-field" class="form-label">Image</label>
+              <input type="text" class="form-control" id="image-field" name="campground[image]" value="<%= campground.image %>">
+            </div>
+
+            <div class="mb-2">
+              <label for="desc-field" class="form-label">Description</label>
+              <input type="text" class="form-control" id="desc-field" name="campground[description]" value="<%= campground.description %>">
+            </div>
+
+            <div class="mb-2 form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Agree to terms and conditons</label>
+            </div>
+            <button type="submit" class="btn btn-dark btn-block">Submit</button>
+          </form>
+          <a href="/campgrounds">Go back</a>
+    </div>
+</div>
+
+
+<%- include ("partials/footer") %>
+

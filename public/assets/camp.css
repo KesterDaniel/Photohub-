@@ -9,3 +9,7 @@
 .img-thumbnail .caption-full {
     padding: 9px;
 }
+
+#camp-del-form{
+    display: inline;
+}

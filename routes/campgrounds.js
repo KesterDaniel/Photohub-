@@ -48,6 +48,41 @@ router.get("/:id", async(req, res)=>{
     }
 })
 
+
+//UPDATE ROUTES
+router.get("/:id/edit", async(req, res)=>{
+    const CampId = req.params.id
+    try {
+        const campground = await Campground.findById(CampId)
+        res.render("editCamp", { campground })
+    } catch (error) {
+        console.log(error)
+        res.redirect("/campgrounds")
+    }
+})
+
+router.put("/:id", async(req, res)=>{
+    const updatedCamp = req.body.campground
+    const id = req.params.id
+    try {
+        await Campground.findByIdAndUpdate(id, updatedCamp)
+        res.redirect(`/campgrounds/${id}`)
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+//DELETE ROUTE
+router.delete("/:id", async(req, res)=>{
+    try {
+        await Campground.findByIdAndRemove(req.params.id)
+        res.redirect("/campgrounds")
+    } catch (error) {
+        console.log(error)
+    }
+}) 
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next()
