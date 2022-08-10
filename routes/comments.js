@@ -55,6 +55,17 @@ router.put("/:commentid", async(req, res)=>{
     }
 })
 
+router.delete("/:commentid", async(req, res)=>{
+    const commentId = req.params.commentid
+    const campId = req.params.id
+    try {
+        await Comment.findByIdAndRemove(commentId)
+        res.redirect(`/campgrounds/${campId}`)
+    } catch (error) {
+        res.redirect("back")
+    }
+})
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next()
