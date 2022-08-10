@@ -32,6 +32,29 @@ router.post("/", isLoggedIn, async(req, res)=>{
     }
 })
 
+router.get("/:commentid/edit", async(req, res)=>{
+    const campId = req.params.id
+    const commentId = req.params.commentid
+    try {
+        const badcomment = await Comment.findById(commentId)
+        res.render("editComment", { badcomment, campId })
+    } catch (error) {
+        res.redirect("back")
+    }
+})
+
+router.put("/:commentid", async(req, res)=>{
+    const campId = req.params.id
+    const commentId = req.params.commentid
+    const newComment = req.body.comment
+    try {
+        await Comment.findByIdAndUpdate(commentId, newComment)
+        res.redirect(`/campgrounds/${campId}`)
+    } catch (error) {
+        res.redirect("back")
+    }
+})
+
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
         return next()

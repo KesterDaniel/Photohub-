@@ -37,6 +37,7 @@
                                 <strong><%= comment.Author.username %></strong>
                                 <span class="float-end">10 days ago</span>
                                 <p><%= comment.text %></p>
+                                <a class="btn btn-xs btn-dark" href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
                             </div>
                         </div>
                     <% }) %>
