@@ -25,14 +25,13 @@ router.post("/", isLoggedIn, async(req, res)=>{
        await camp.comments.push(MyComment)
        await camp.save()
        res.redirect(`/campgrounds/${campId}`)
-       console.log("added comment")
     } catch (error) {
         res.redirect("/campgrounds")
         console.log(error)
     }
 })
 
-router.get("/:commentid/edit", async(req, res)=>{
+router.get("/:commentid/edit", checkCommentOwnerShip, async(req, res)=>{
     const campId = req.params.id
     const commentId = req.params.commentid
     try {
@@ -43,7 +42,7 @@ router.get("/:commentid/edit", async(req, res)=>{
     }
 })
 
-router.put("/:commentid", async(req, res)=>{
+router.put("/:commentid", checkCommentOwnerShip, async(req, res)=>{
     const campId = req.params.id
     const commentId = req.params.commentid
     const newComment = req.body.comment
@@ -55,7 +54,7 @@ router.put("/:commentid", async(req, res)=>{
     }
 })
 
-router.delete("/:commentid", async(req, res)=>{
+router.delete("/:commentid", checkCommentOwnerShip, async(req, res)=>{
     const commentId = req.params.commentid
     const campId = req.params.id
     try {
@@ -71,6 +70,23 @@ function isLoggedIn(req, res, next){
         return next()
     }
     res.redirect("/login")
+}
+
+async function checkCommentOwnerShip(req, res, next){
+    if(req.isAuthenticated()){
+        try {
+            const TheComment = await Comment.findById(req.params.commentid)
+            if(TheComment.Author.id.equals(req.user._id)){
+                next()
+            }else{
+                res.send("you dont have permission to do that")
+            }
+        } catch (error) {
+            res.redirect("back")
+        }
+    }else{
+        res.redirect("back")
+    }
 }
 
 module.exports = router
