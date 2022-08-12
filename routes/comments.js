@@ -2,9 +2,11 @@ const express = require("express")
 const router = new express.Router({mergeParams: true})
 const Campground = require("../models/campgrounds")
 const Comment = require("../models/comments")
+const middleware = require("../middleware")
+ 
 
 
-router.get("/new", isLoggedIn, async(req, res)=>{
+router.get("/new", middleware.isLoggedIn, async(req, res)=>{
     try {
         const campground = await Campground.findById(req.params.id)
         res.render("newComment", { campground })
@@ -13,7 +15,7 @@ router.get("/new", isLoggedIn, async(req, res)=>{
     }
 })
 
-router.post("/", isLoggedIn, async(req, res)=>{
+router.post("/", middleware.isLoggedIn, async(req, res)=>{
     const newComment = req.body.comment
     const campId = req.params.id
     try {
@@ -31,7 +33,7 @@ router.post("/", isLoggedIn, async(req, res)=>{
     }
 })
 
-router.get("/:commentid/edit", checkCommentOwnerShip, async(req, res)=>{
+router.get("/:commentid/edit", middleware.checkCommentOwnerShip, async(req, res)=>{
     const campId = req.params.id
     const commentId = req.params.commentid
     try {
@@ -42,7 +44,7 @@ router.get("/:commentid/edit", checkCommentOwnerShip, async(req, res)=>{
     }
 })
 
-router.put("/:commentid", checkCommentOwnerShip, async(req, res)=>{
+router.put("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
     const campId = req.params.id
     const commentId = req.params.commentid
     const newComment = req.body.comment
@@ -54,7 +56,7 @@ router.put("/:commentid", checkCommentOwnerShip, async(req, res)=>{
     }
 })
 
-router.delete("/:commentid", checkCommentOwnerShip, async(req, res)=>{
+router.delete("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
     const commentId = req.params.commentid
     const campId = req.params.id
     try {
@@ -65,28 +67,8 @@ router.delete("/:commentid", checkCommentOwnerShip, async(req, res)=>{
     }
 })
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next()
-    }
-    res.redirect("/login")
-}
 
-async function checkCommentOwnerShip(req, res, next){
-    if(req.isAuthenticated()){
-        try {
-            const TheComment = await Comment.findById(req.params.commentid)
-            if(TheComment.Author.id.equals(req.user._id)){
-                next()
-            }else{
-                res.send("you dont have permission to do that")
-            }
-        } catch (error) {
-            res.redirect("back")
-        }
-    }else{
-        res.redirect("back")
-    }
-}
+
+
 
 module.exports = router

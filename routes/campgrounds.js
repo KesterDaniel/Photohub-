@@ -1,6 +1,7 @@
 const express = require("express")
 const router = new express.Router()
 const Campground = require("../models/campgrounds")
+const middleware = require("../middleware")
 
 //INDEX ROUTE
 router.get("/", async(req, res)=>{
@@ -13,7 +14,7 @@ router.get("/", async(req, res)=>{
 })
 
 //CREATE ROUTE
-router.post("/", isLoggedIn, async(req, res)=>{
+router.post("/", middleware.isLoggedIn, async(req, res)=>{
     const name = req.body.name
     const image = req.body.image
     const description = req.body.description
@@ -32,7 +33,7 @@ router.post("/", isLoggedIn, async(req, res)=>{
 })
 
 //NEW ROUTE
-router.get("/new", isLoggedIn, (req, res)=>{
+router.get("/new", middleware.isLoggedIn, (req, res)=>{
     res.render("new")
 })
 
@@ -50,13 +51,13 @@ router.get("/:id", async(req, res)=>{
 
 
 //UPDATE ROUTES
-router.get("/:id/edit", checkCampOwnership, async(req, res)=>{
+router.get("/:id/edit", middleware.checkCampOwnership, async(req, res)=>{
     const CampId = req.params.id
     const campground = await Campground.findById(CampId)
     res.render("editCamp", { campground })
 })
 
-router.put("/:id", checkCampOwnership, async(req, res)=>{
+router.put("/:id", middleware.checkCampOwnership, async(req, res)=>{
     const updatedCamp = req.body.campground
     const id = req.params.id
     try {
@@ -69,7 +70,7 @@ router.put("/:id", checkCampOwnership, async(req, res)=>{
 
 
 //DELETE ROUTE
-router.delete("/:id", checkCampOwnership, async(req, res)=>{
+router.delete("/:id", middleware.checkCampOwnership, async(req, res)=>{
     try {
         await Campground.findByIdAndRemove(req.params.id)
         res.redirect("/campgrounds")
@@ -78,28 +79,7 @@ router.delete("/:id", checkCampOwnership, async(req, res)=>{
     }
 }) 
 
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next()
-    }
-    res.redirect("/login")
-}
 
-async function checkCampOwnership(req, res, next) {
-    if(req.isAuthenticated()){
-        try {
-            const foundcampground = await Campground.findById(req.params.id)
-            if(foundcampground.Author.id.equals(req.user._id)){
-                next()
-            }else{
-                res.send("You dont have permission to do that")
-            }
-        } catch (error) {
-            res.redirect("back")
-        }
-    }else{
-        res.redirect("back")
-    }
-}
+
 
 module.exports = router
