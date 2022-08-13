@@ -10,12 +10,15 @@ middlewareObj.checkCampOwnership = async function(req, res, next) {
             if(foundcampground.Author.id.equals(req.user._id)){
                 next()
             }else{
-                res.send("You dont have permission to do that")
+                req.flash("error", "You don't permission to do that")
+                res.redirect("back")
             }
         } catch (error) {
+            req.flash("error", "Sorry, Campground not found")
             res.redirect("back")
         }
     }else{
+        req.flash("error", "You need to be logged in to do that")
         res.redirect("back")
     }
 }
@@ -27,12 +30,15 @@ middlewareObj.checkCommentOwnerShip = async function(req, res, next){
             if(TheComment.Author.id.equals(req.user._id)){
                 next()
             }else{
-                res.send("you dont have permission to do that")
+                req.flash("error", "You don't permission to do that")
+                res.redirect("back")
             }
         } catch (error) {
+            req.flash("error", "Comment not found")
             res.redirect("back")
         }
     }else{
+        req.flash("error", "You need to be logged in to do that")
         res.redirect("back")
     }
 }
@@ -41,6 +47,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next()
     }
+    req.flash("error", "You need to be logged in to do that")
     res.redirect("/login")
 }
 

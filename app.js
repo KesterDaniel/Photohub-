@@ -8,6 +8,7 @@ const expressSession = require("express-session")
 const passportLocalMongose = require("passport-local-mongoose")
 const LocalStrategy = require("passport-local")
 const User = require("./models/usermodel")
+const flash = require("connect-flash")
 const Campground = require("./models/campgrounds")
 const Comment = require("./models/comments")
 const commentRoute = require("./routes/comments")
@@ -31,13 +32,18 @@ app.use(expressSession({
     resave: false,
     saveUninitialized: false
 }))
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(function(req, res, next){
     res.locals.currentUser = req.user
+    res.locals.error = req.flash("error")
+    res.locals.success = req.flash("success")
     next()
 })
+
+
 
 //Passport Config
 passport.use(new LocalStrategy(User.authenticate()))

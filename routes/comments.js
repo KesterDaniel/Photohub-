@@ -26,6 +26,7 @@ router.post("/", middleware.isLoggedIn, async(req, res)=>{
        await MyComment.save()
        await camp.comments.push(MyComment)
        await camp.save()
+       req.flash("success", "Added comment successfully!")
        res.redirect(`/campgrounds/${campId}`)
     } catch (error) {
         res.redirect("/campgrounds")
@@ -50,6 +51,7 @@ router.put("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
     const newComment = req.body.comment
     try {
         await Comment.findByIdAndUpdate(commentId, newComment)
+        req.flash("success", "Comment successfully updated!!")
         res.redirect(`/campgrounds/${campId}`)
     } catch (error) {
         res.redirect("back")
@@ -61,6 +63,7 @@ router.delete("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>
     const campId = req.params.id
     try {
         await Comment.findByIdAndRemove(commentId)
+        req.flash("success", "Comment deleted")
         res.redirect(`/campgrounds/${campId}`)
     } catch (error) {
         res.redirect("back")

@@ -26,6 +26,7 @@ router.post("/", middleware.isLoggedIn, async(req, res)=>{
     try {
         await Campground.create(newCampground)
         console.log("CampGround successfully created")
+        req.flash("success", "CampGround successfully created")
         res.redirect("/campgrounds")
     } catch (error) {
         console.log(error)
@@ -62,6 +63,7 @@ router.put("/:id", middleware.checkCampOwnership, async(req, res)=>{
     const id = req.params.id
     try {
         await Campground.findByIdAndUpdate(id, updatedCamp)
+        req.flash("success", "Successfully updated campground!!")
         res.redirect(`/campgrounds/${id}`)
     } catch (error) {
         console.log(error)
@@ -73,6 +75,7 @@ router.put("/:id", middleware.checkCampOwnership, async(req, res)=>{
 router.delete("/:id", middleware.checkCampOwnership, async(req, res)=>{
     try {
         await Campground.findByIdAndRemove(req.params.id)
+        req.flash("success", "Campground successfully deleted!!")
         res.redirect("/campgrounds")
     } catch (error) {
         console.log(error)

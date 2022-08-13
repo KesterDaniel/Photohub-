@@ -24,10 +24,12 @@ router.post("/signup", async(req, res)=>{
     try {
         await User.register(newUser, password)
         await passport.authenticate("local")(req, res, function(){
+            req.flash("success", `Successfully signed up. Welcome here ${username}`)
             res.redirect("/campgrounds")
         })
     } catch (error) {
         console.log(error)
+        req.flash("error", error.message)
         res.redirect("/signup")
     }
 })
@@ -48,15 +50,10 @@ router.get("/logout", (req, res, next)=>{
         if(err){
             return next(err)
         }
+        req.flash("success", "Logged you out. See you next time")
         res.redirect("/campgrounds")
     })
 })
 
-// function isLoggedIn(req, res, next){
-//     if(req.isAuthenticated()){
-//         return next()
-//     }
-//     res.redirect("/login")
-// }
 
 module.exports = router
