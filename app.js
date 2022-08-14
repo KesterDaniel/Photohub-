@@ -14,10 +14,10 @@ const Comment = require("./models/comments")
 const commentRoute = require("./routes/comments")
 const indexRoute = require("./routes/index")
 const campgroundRoute = require("./routes/campgrounds")
-const port = 3000 || process.env.PORT 
+const port =  process.env.PORT || 3000
 
 //Mongoose connect config
-mongoose.connect('mongodb://127.0.0.1:27017/YelpCamp', {
+mongoose.connect(process.env.MONGODB_URL, {
     useUnifiedTopology: true
 })
 
@@ -28,7 +28,7 @@ app.use(express.static("public"))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(methodOverride("_method"))
 app.use(expressSession({
-    secret: "This is yelpcamp Auth session in progress",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false
 }))

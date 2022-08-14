@@ -13,7 +13,8 @@ const CampgroundSchema = mongoose.Schema({
             ref: "User"
         },
         username: String
-    }
+    },
+    price : Number
 })
 
 const Campground = mongoose.model("campground", CampgroundSchema)

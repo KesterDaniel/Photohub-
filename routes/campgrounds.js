@@ -22,7 +22,8 @@ router.post("/", middleware.isLoggedIn, async(req, res)=>{
         id: req.user._id,
         username: req.user.username
     }
-    const newCampground = { name, image, description, Author}
+    const price = req.body.price
+    const newCampground = { name, image, description, Author, price}
     try {
         await Campground.create(newCampground)
         console.log("CampGround successfully created")

@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js -e js,ejs",
+    "dev": " env-cmd ./config/dev.env nodemon app.js -e js,ejs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kester Daniel",
@@ -22,5 +22,8 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^7.1.2"
+  },
+  "devDependencies": {
+    "env-cmd": "^8.0.2"
   }
 }
