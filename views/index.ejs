@@ -4,22 +4,22 @@
 
 <div class="container">
     <header class="mt-4 mb-3 p-5 bg-dark text-white rounded" id="jumbotron">
-        <h1><i class="bi bi-campground"></i> Welcome to YelpCamp!!</h1>
-        <p>View our hand-picked campgrounds from all over the world</p>
+        <h1><i class="bi bi-campground"></i>Welcome To PhotoHub</h1>
+        <p>A single picture speaks a thousand words...don't you think</p>
         <P>
-            <a class="btn btn-primary btn-lg" href="/campgrounds/new">Add new campground</a>
+            <a class="btn btn-primary btn-lg" href="/photos/new">Add a Photo</a>
         </P>
     </header>
 
     <div class="row text-center">
-        <% campgrounds.forEach((campground)=>{ %>
+        <% photos.forEach((photo)=>{ %>
             <div class="col-lg-4 col-md-4 col-sm-6 mb-3">
                 <div class="img-thumbnail">
-                    <img src="<%= campground.image %>" class="img-responsive" width="100%" height="100%" >
+                    <img src="<%= photo.image %>" class="img-responsive" width="100%" height="100%" >
                     <div class="caption">
-                        <h4><%= campground.name %></h4>
+                        <h4><%= photo.name %></h4>
                     </div>
-                    <p><a href="/campgrounds/<%= campground._id %>" class="btn btn-dark">More Info</a></p>
+                    <p><a href="/photos/<%= photo._id %>" class="btn btn-dark">See This</a></p>
                 </div>
             </div>
         <% }) %>

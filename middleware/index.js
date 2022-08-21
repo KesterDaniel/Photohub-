@@ -1,20 +1,20 @@
-const Campground = require("../models/campgrounds")
+const Photo = require("../models/Photo")
 const Comment = require("../models/comments")
 
 const middlewareObj = {}
 
-middlewareObj.checkCampOwnership = async function(req, res, next) {
+middlewareObj.checkphotoOwnership = async function(req, res, next) {
     if(req.isAuthenticated()){
         try {
-            const foundcampground = await Campground.findById(req.params.id)
-            if(foundcampground.Author.id.equals(req.user._id)){
+            const foundphoto = await Photo.findById(req.params.id)
+            if(foundphoto.Author.id.equals(req.user._id)){
                 next()
             }else{
                 req.flash("error", "You don't permission to do that")
                 res.redirect("back")
             }
         } catch (error) {
-            req.flash("error", "Sorry, Campground not found")
+            req.flash("error", "Sorry, Photo not found")
             res.redirect("back")
         }
     }else{

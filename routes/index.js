@@ -25,7 +25,7 @@ router.post("/signup", async(req, res)=>{
         await User.register(newUser, password)
         await passport.authenticate("local")(req, res, function(){
             req.flash("success", `Successfully signed up. Welcome here ${username}`)
-            res.redirect("/campgrounds")
+            res.redirect("/photos")
         })
     } catch (error) {
         console.log(error)
@@ -39,7 +39,7 @@ router.get("/login", (req, res)=>{
 })
 
 router.post("/login", passport.authenticate("local", {
-    successRedirect: "/campgrounds",
+    successRedirect: "/photos",
     failureRedirect: "/login"
 }), (req, res)=>{
 
@@ -51,7 +51,7 @@ router.get("/logout", (req, res, next)=>{
             return next(err)
         }
         req.flash("success", "Logged you out. See you next time")
-        res.redirect("/campgrounds")
+        res.redirect("/photos")
     })
 })
 

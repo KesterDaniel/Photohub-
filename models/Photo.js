@@ -1,8 +1,7 @@
 const mongoose = require("mongoose")
-const CampgroundSchema = mongoose.Schema({
-    name: String,
+const PhotoSchema = mongoose.Schema({
     image: String,
-    description: String,
+    caption: String,
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
@@ -14,9 +13,8 @@ const CampgroundSchema = mongoose.Schema({
         },
         username: String
     },
-    price : Number
 })
 
-const Campground = mongoose.model("campground", CampgroundSchema)
+const Photo = mongoose.model("photo", PhotoSchema)
 
-module.exports = Campground
+module.exports = Photo

@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router({mergeParams: true})
-const Campground = require("../models/campgrounds")
+const Photo = require("../models/Photo")
 const Comment = require("../models/comments")
 const middleware = require("../middleware")
  
@@ -8,8 +8,8 @@ const middleware = require("../middleware")
 
 router.get("/new", middleware.isLoggedIn, async(req, res)=>{
     try {
-        const campground = await Campground.findById(req.params.id)
-        res.render("newComment", { campground })
+        const photo = await Photo.findById(req.params.id)
+        res.render("newComment", { photo })
     } catch (error) {
         console.log(error)
     }
@@ -17,42 +17,42 @@ router.get("/new", middleware.isLoggedIn, async(req, res)=>{
 
 router.post("/", middleware.isLoggedIn, async(req, res)=>{
     const newComment = req.body.comment
-    const campId = req.params.id
+    const photoId = req.params.id
     try {
        const MyComment = await Comment.create(newComment)
-       const camp = await Campground.findById(campId)
+       const photo = await Photo.findById(photoId)
        MyComment.Author.id = req.user._id
        MyComment.Author.username = req.user.username
        await MyComment.save()
-       await camp.comments.push(MyComment)
-       await camp.save()
+       await photo.comments.push(MyComment)
+       await photo.save()
        req.flash("success", "Added comment successfully!")
-       res.redirect(`/campgrounds/${campId}`)
+       res.redirect(`/photos/${photoId}`)
     } catch (error) {
-        res.redirect("/campgrounds")
+        res.redirect("/photos")
         console.log(error)
     }
 })
 
 router.get("/:commentid/edit", middleware.checkCommentOwnerShip, async(req, res)=>{
-    const campId = req.params.id
+    const photoId = req.params.id
     const commentId = req.params.commentid
     try {
         const badcomment = await Comment.findById(commentId)
-        res.render("editComment", { badcomment, campId })
+        res.render("editComment", { badcomment, photoId })
     } catch (error) {
         res.redirect("back")
     }
 })
 
 router.put("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
-    const campId = req.params.id
+    const photoId = req.params.id
     const commentId = req.params.commentid
     const newComment = req.body.comment
     try {
         await Comment.findByIdAndUpdate(commentId, newComment)
         req.flash("success", "Comment successfully updated!!")
-        res.redirect(`/campgrounds/${campId}`)
+        res.redirect(`/photos/${photoId}`)
     } catch (error) {
         res.redirect("back")
     }
@@ -60,11 +60,11 @@ router.put("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
 
 router.delete("/:commentid", middleware.checkCommentOwnerShip, async(req, res)=>{
     const commentId = req.params.commentid
-    const campId = req.params.id
+    const photoId = req.params.id
     try {
         await Comment.findByIdAndRemove(commentId)
         req.flash("success", "Comment deleted")
-        res.redirect(`/campgrounds/${campId}`)
+        res.redirect(`/photos/${photoId}`)
     } catch (error) {
         res.redirect("back")
     }

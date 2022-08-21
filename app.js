@@ -9,11 +9,11 @@ const passportLocalMongose = require("passport-local-mongoose")
 const LocalStrategy = require("passport-local")
 const User = require("./models/usermodel")
 const flash = require("connect-flash")
-const Campground = require("./models/campgrounds")
+const Photo = require("./models/Photo")
 const Comment = require("./models/comments")
 const commentRoute = require("./routes/comments")
 const indexRoute = require("./routes/index")
-const campgroundRoute = require("./routes/campgrounds")
+const photoRoute = require("./routes/photos")
 const port =  process.env.PORT || 3000
 
 //Mongoose connect config
@@ -50,9 +50,9 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.deserializeUser(User.deserializeUser())
 passport.serializeUser(User.serializeUser())
 
-app.use("/campgrounds/:id/comments", commentRoute)
+app.use("/photos/:id/comments", commentRoute)
 app.use(indexRoute)
-app.use("/campgrounds", campgroundRoute)
+app.use("/photos", photoRoute)
 
 
 

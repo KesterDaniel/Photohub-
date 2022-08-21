@@ -3,28 +3,18 @@
 
 
 <div class="container">
-    <h1 style="text-align: center;">Edit <%= campground.name %></h1>
+    <h1 style="text-align: center;">Edit Your Photo</h1>
 
     <div style="width: 30%; margin: 25px auto;">
-        <form action="/campgrounds/<%= campground._id %>?_method=put" method="post">
-            <div class="mb-2">
-              <label for="camp-name" class="form-label">Campground Name</label>
-              <input type="text" class="form-control" id="camp-name" aria-describedby="emailHelp" name="campground[name]" value="<%= campground.name %>">
-            </div>
-
+        <form action="/photos/<%= photo._id %>?_method=put" method="post">
             <div class="mb-2">
               <label for="image-field" class="form-label">Image</label>
-              <input type="text" class="form-control" id="image-field" name="campground[image]" value="<%= campground.image %>">
+              <input type="text" class="form-control" id="image-field" name="photo[image]" value="<%= photo.image %>">
             </div>
 
             <div class="mb-2">
-              <label for="image-field" class="form-label">Price</label>
-              <input type="number" class="form-control" id="image-field" name="campground[price]" value="<%= campground.price %>" min="0.01" step="0.01">
-            </div>
-
-            <div class="mb-2">
-              <label for="desc-field" class="form-label">Description</label>
-              <input type="text" class="form-control" id="desc-field" name="campground[description]" value="<%= campground.description %>">
+              <label for="desc-field" class="form-label">Caption</label>
+              <textarea class="form-control" id="desc-field" rows="3" name="photo[caption]"><%= photo.caption %></textarea>
             </div>
 
             <div class="mb-2 form-check">
@@ -33,7 +23,7 @@
             </div>
             <button type="submit" class="btn btn-dark btn-block">Submit</button>
           </form>
-          <a href="/campgrounds">Go back</a>
+          <a href="/photos">Go back</a>
     </div>
 </div>
 

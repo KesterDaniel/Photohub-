@@ -1,6 +1,6 @@
 const express = require("express")
 const router = new express.Router()
-const Campground = require("../models/campgrounds")
+const Photo = require("../models/Photo")
 const middleware = require("../middleware")
 
 var multer = require('multer');
@@ -28,8 +28,8 @@ cloudinary.config({
 //INDEX ROUTE
 router.get("/", async(req, res)=>{
     try {
-        const allCampgrounds = await Campground.find({})
-        res.render("index", { campgrounds: allCampgrounds})
+        const allphotos = await Photo.find({})
+        res.render("index", { photos: allphotos })
     } catch (error) {
         console.log(error)
     }
@@ -40,14 +40,14 @@ router.post("/", middleware.isLoggedIn, upload.single("image"), async(req, res)=
     try {
         const result = await cloudinary.uploader.upload(req.file.path) 
         // add cloudinary url for the image to the campground object under image property
-        req.body.campground.image = result.secure_url;
+        req.body.photo.image = result.secure_url;
         // add author to campground
-        req.body.campground.Author = {
+        req.body.photo.Author = {
           id: req.user._id,
           username: req.user.username
         }
-        const campground = await Campground.create(req.body.campground)
-        res.redirect(`/campgrounds/${campground.id}`)
+        const photo = await Photo.create(req.body.photo)
+        res.redirect(`/photos/${photo.id}`)
     } catch (error) {
         req.flash("error", error.message)
         res.redirect("back")
@@ -62,11 +62,11 @@ router.get("/new", middleware.isLoggedIn, (req, res)=>{
 
 //SHOW ROUTE
 router.get("/:id", async(req, res)=>{
-    const CampId = req.params.id
+    const PhotoId = req.params.id
     try {
-        const chosenCamp = await Campground.findById(CampId)
-        await chosenCamp.populate("comments")
-        res.render("show", {campground: chosenCamp})
+        const chosenPhoto = await Photo.findById(PhotoId)
+        await chosenPhoto.populate("comments")
+        res.render("show", {photo: chosenPhoto})
     } catch (error) {
         console.log(error)
     }
@@ -74,19 +74,19 @@ router.get("/:id", async(req, res)=>{
 
 
 //UPDATE ROUTES
-router.get("/:id/edit", middleware.checkCampOwnership, async(req, res)=>{
-    const CampId = req.params.id
-    const campground = await Campground.findById(CampId)
-    res.render("editCamp", { campground })
+router.get("/:id/edit", middleware.checkphotoOwnership, async(req, res)=>{
+    const PhotoId = req.params.id
+    const photo = await Photo.findById(PhotoId)
+    res.render("editCamp", { photo })
 })
 
-router.put("/:id", middleware.checkCampOwnership, async(req, res)=>{
-    const updatedCamp = req.body.campground
+router.put("/:id", middleware.checkphotoOwnership, async(req, res)=>{
+    const updatedPhoto = req.body.photo
     const id = req.params.id
     try {
-        await Campground.findByIdAndUpdate(id, updatedCamp)
-        req.flash("success", "Successfully updated campground!!")
-        res.redirect(`/campgrounds/${id}`)
+        await Photo.findByIdAndUpdate(id, updatedPhoto)
+        req.flash("success", "Successfully updated photo!!")
+        res.redirect(`/photos/${id}`)
     } catch (error) {
         console.log(error)
     }
@@ -94,11 +94,11 @@ router.put("/:id", middleware.checkCampOwnership, async(req, res)=>{
 
 
 //DELETE ROUTE
-router.delete("/:id", middleware.checkCampOwnership, async(req, res)=>{
+router.delete("/:id", middleware.checkphotoOwnership, async(req, res)=>{
     try {
-        await Campground.findByIdAndRemove(req.params.id)
-        req.flash("success", "Campground successfully deleted!!")
-        res.redirect("/campgrounds")
+        await Photo.findByIdAndRemove(req.params.id)
+        req.flash("success", "Photo successfully deleted!!")
+        res.redirect("/photos")
     } catch (error) {
         console.log(error)
     }

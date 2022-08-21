@@ -3,10 +3,10 @@
 
 
 <div class="container">
-    <h1 style="text-align: center;">Add a comment to <%= campground.name %></h1>
+    <h1 style="text-align: center;">Add a comment to <%= photo.name %></h1>
 
     <div style="width: 30%; margin: 25px auto;">
-        <form action="/campgrounds/<%= campground._id %>/comments" method="post">
+        <form action="/photos/<%= photo._id %>/comments" method="post">
             <div class="mb-2">
               <label for="text" class="form-label">Text</label>
               <input type="text" class="form-control" id="text" name="comment[text]">
@@ -14,7 +14,7 @@
 
             <button type="submit" class="btn btn-dark btn-block">Submit</button>
           </form>
-          <a href="/campgrounds">Go back</a>
+          <a href="/photos">Go back</a>
     </div>
 </div>
 
