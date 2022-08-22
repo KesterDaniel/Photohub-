@@ -1,11 +1,22 @@
 <%- include ("partials/header") %>
 
-<h1>This is the login form</h1>
+        <div class="container" id="loginform">
+            <h1 style="text-align: center;">Login To PhotoHub</h1>
 
-<form action="/login" method="post">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <button>Log In</button>
-</form>
+            <div style="width: 100%; margin: 25px auto;">
+                <form action="/login" method="post">
+                    <div class="mb-2">
+                        <label for="username" class="form-label">Username</label>
+                        <input class="form-control" type="text" name="username" id="username" placeholder="username">
+                    </div>
+                    <div class="mb-2">
+                        <label for="password" class="form-label">Password</label>
+                        <input class="form-control" type="password" name="password" id="password" placeholder="password">
+                    </div>
+                    <button type="submit" class="btn btn-dark btn-block" style="width: 100%;">Log In</button>
+                </form>
+            </div>
+        </div>
+
 
 <%- include ("partials/footer") %>

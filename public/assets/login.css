@@ -1,0 +1,15 @@
+body{
+    background-color: #fff;
+}
+h1{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+#loginform{
+    margin-top: 30vh;
+    width: 50%;
+    border: 1px solid #e8e8e8;
+    background: #e8e8e8;
+    border-radius: 0.5em;
+    box-shadow: 6px 6px 12px #c5c5c5,
+                -6px -6px 12px #fff;
+}

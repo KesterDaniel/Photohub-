@@ -5,11 +5,11 @@
 <div class="container">
     <h1 style="text-align: center;">Add a New Photo</h1>
 
-    <div style="width: 30%; margin: 25px auto;">
+    <div style="width: 70%; margin: 25px auto;">
         <form action="/photos" method="post" enctype="multipart/form-data">
             <div class="mb-2">
-              <label for="image">Image</label>
-              <input type="file" id="image" name="image" accept="image/*" required>
+              <label class="form-label" for="image">Image</label>
+              <input class="form-control" type="file" id="image" name="image" accept="image/*" required>
             </div>
 
             <div class="mb-2">
@@ -21,7 +21,7 @@
               <input type="checkbox" class="form-check-input" id="exampleCheck1">
               <label class="form-check-label" for="exampleCheck1">Agree to terms and conditons</label>
             </div>
-            <button type="submit" class="btn btn-dark btn-block">Submit</button>
+            <button type="submit" class="btn btn-dark btn-block" style="width: 100%;">Submit</button>
           </form>
           <a href="/photos">Go back</a>
     </div>

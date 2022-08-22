@@ -1,11 +1,22 @@
 <%- include ("partials/header") %>
 
-<h1>This is the register Form</h1>
 
-<form action="/signup" method="post">
-    <input type="text" name="username" placeholder="username">
-    <input type="password" name="password" placeholder="password">
-    <button>Sign Up</button>
-</form>
+<div class="container" id="signupform">
+    <h1 style="text-align: center;">Signup for PhotoHub</h1>
+
+    <div style="width: 100%; margin: 25px auto;">
+        <form action="/signup" method="post">
+            <div class="mb-2">
+                <label for="username">Username</label>
+                <input class="form-control" type="text" id="username" name="username" placeholder="username">
+            </div>
+            <div class="mb-2">
+                <label for="password">Password</label>
+                <input class="form-control" type="password" id="password" name="password" placeholder="password">
+            </div>
+            <button type="submit" class="btn btn-dark btn-block" style="width: 100%;">Sign Up</button>
+        </form>
+    </div>
+</div>
 
 <%- include ("partials/footer") %>
