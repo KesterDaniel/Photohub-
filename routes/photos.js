@@ -74,23 +74,23 @@ router.get("/:id", async(req, res)=>{
 
 
 //UPDATE ROUTES
-router.get("/:id/edit", middleware.checkphotoOwnership, async(req, res)=>{
-    const PhotoId = req.params.id
-    const photo = await Photo.findById(PhotoId)
-    res.render("editCamp", { photo })
-})
+// router.get("/:id/edit", middleware.checkphotoOwnership, async(req, res)=>{
+//     const PhotoId = req.params.id
+//     const photo = await Photo.findById(PhotoId)
+//     res.render("editCamp", { photo })
+// })
 
-router.put("/:id", middleware.checkphotoOwnership, async(req, res)=>{
-    const updatedPhoto = req.body.photo
-    const id = req.params.id
-    try {
-        await Photo.findByIdAndUpdate(id, updatedPhoto)
-        req.flash("success", "Successfully updated photo!!")
-        res.redirect(`/photos/${id}`)
-    } catch (error) {
-        console.log(error)
-    }
-})
+// router.put("/:id", middleware.checkphotoOwnership, async(req, res)=>{
+//     const updatedPhoto = req.body.photo
+//     const id = req.params.id
+//     try {
+//         await Photo.findByIdAndUpdate(id, updatedPhoto)
+//         req.flash("success", "Successfully updated photo!!")
+//         res.redirect(`/photos/${id}`)
+//     } catch (error) {
+//         console.log(error)
+//     }
+// })
 
 
 //DELETE ROUTE

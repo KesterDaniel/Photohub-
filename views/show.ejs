@@ -16,7 +16,6 @@
                     <p><%= photo.caption %></p>
                     <p><em>Posted By <%= photo.Author.username %></em></p>
                     <% if(currentUser && photo.Author.id.equals(currentUser._id)){ %>
-                        <a class="btn btn-dark btn-sm" href="/photos/<%= photo._id %>/edit">Edit</a>
                         <form id="camp-del-form" action="/photos/<%= photo._id %>?_method=delete" method="post">
                             <button class="btn btn-danger btn-sm">Delete</button>
                         </form>
