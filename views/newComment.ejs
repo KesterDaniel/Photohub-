@@ -3,13 +3,13 @@
 
 
 <div class="container">
-    <h1 style="text-align: center;">Add a comment to <%= photo.name %></h1>
+    <h1 style="text-align: center;">Add a comment</h1>
 
     <div style="width: 30%; margin: 25px auto;">
         <form action="/photos/<%= photo._id %>/comments" method="post">
             <div class="mb-2">
               <label for="text" class="form-label">Text</label>
-              <input type="text" class="form-control" id="text" name="comment[text]">
+              <textarea  class="form-control" rows="3" id="text" name="comment[text]"></textarea>
             </div>
 
             <button type="submit" class="btn btn-dark btn-block">Submit</button>
