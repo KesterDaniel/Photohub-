@@ -39,10 +39,11 @@ router.get("/login", (req, res)=>{
 })
 
 router.post("/login", passport.authenticate("local", {
-    successRedirect: "/photos",
+    // successRedirect: "/photos",
     failureRedirect: "/login"
 }), (req, res)=>{
-
+    req.flash("success", "Welcome back. Nice to see you again")
+    res.redirect("/photos")
 })
 
 router.get("/logout", (req, res, next)=>{
